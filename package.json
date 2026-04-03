@@ -1,0 +1,17 @@
+{
+  "name": "contentpush-saas",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w apps/api",
+    "dev:api": "npm run dev -w apps/api",
+    "dev:web": "npm run dev -w apps/web",
+    "dev:worker": "npm run dev -w apps/worker",
+    "dev:mobile": "npm run dev -w apps/mobile",
+    "build": "npm run build -w apps/api && npm run build -w apps/web && npm run build -w apps/worker",
+    "test": "npm run test -w apps/api"
+  }
+}

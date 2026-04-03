@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "ContentPush",
+    "slug": "contentpush",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.contentpush.app"
+    },
+    "android": {
+      "package": "com.contentpush.app"
+    }
+  }
+}

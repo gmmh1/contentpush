@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String         @id @default(uuid())
+  email        String         @unique
+  passwordHash String
+  role         String         @default("member")
+  plan         String         @default("free")
+  createdAt    DateTime       @default(now())
+  posts        Post[]
+  automations  Automation[]
+  accounts     SocialAccount[]
+  subscription Subscription?
+}
+
+model SocialAccount {
+  id          String   @id @default(uuid())
+  userId      String
+  platform    String
+  externalId  String?
+  accessToken String
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Post {
+  id          String    @id @default(uuid())
+  userId      String
+  content     String
+  platform    String
+  status      String    @default("draft")
+  publishAt   DateTime?
+  createdAt   DateTime  @default(now())
+  publishedAt DateTime?
+  user        User      @relation(fields: [userId], references: [id])
+  schedule    Schedule?
+}
+
+model Schedule {
+  id        String   @id @default(uuid())
+  postId    String   @unique
+  publishAt DateTime
+  createdAt DateTime @default(now())
+  post      Post     @relation(fields: [postId], references: [id])
+}
+
+model Automation {
+  id        String   @id @default(uuid())
+  userId    String
+  trigger   String
+  action    String
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Subscription {
+  id                 String   @id @default(uuid())
+  userId             String   @unique
+  stripeCustomerId   String?
+  stripeSubscription String?
+  status             String   @default("inactive")
+  createdAt          DateTime @default(now())
+  user               User     @relation(fields: [userId], references: [id])
+}
